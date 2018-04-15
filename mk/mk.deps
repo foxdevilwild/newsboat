@@ -32,6 +32,9 @@ src/cache.o: src/cache.cpp include/controller.h include/urlreader.h \
  config.h include/strprintf.h include/cache.h include/filtercontainer.h \
  include/colormanager.h include/regexmanager.h include/remote_api.h \
  include/fslock.h include/exceptions.h
+src/cliargs.o: src/cliargs.cpp include/cliargs.h include/globals.h \
+ include/utils.h include/logger.h config.h include/strprintf.h \
+ include/configcontainer.h include/configparser.h
 src/colormanager.o: src/colormanager.cpp include/logger.h config.h \
  include/strprintf.h include/colormanager.h include/configparser.h \
  include/utils.h include/configcontainer.h include/pb_view.h \
@@ -65,7 +68,7 @@ src/controller.o: src/controller.cpp config.h include/view.h \
  include/formatstring.h include/rss_parser.h rss/rsspp.h \
  include/oldreader_api.h include/feedhq_api.h include/ttrss_api.h \
  3rd-party/json.hpp include/newsblur_api.h include/ocnews_api.h \
- include/inoreader_api.h xlicense.h include/globals.h
+ include/inoreader_api.h xlicense.h include/cliargs.h include/globals.h
 src/dialogs_formaction.o: src/dialogs_formaction.cpp config.h \
  include/view.h include/controller.h include/urlreader.h \
  include/configcontainer.h include/configparser.h include/rss.h \

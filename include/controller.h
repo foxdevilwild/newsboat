@@ -11,6 +11,7 @@
 #include <remote_api.h>
 #include <libxml/tree.h>
 #include <fslock.h>
+#include "cliargs.h"
 
 namespace newsboat {
 
@@ -103,7 +104,6 @@ class controller {
 
 		unsigned int get_feed_count_per_tag(const std::string& tag);
 	private:
-		void print_usage(char * argv0);
 		bool setup_dirs_xdg(const std::string& env_home);
 		void setup_dirs(const std::string& env_home);
 		void migrate_data_from_newsbeuter(
@@ -157,6 +157,8 @@ class controller {
 
 		std::string lock_file;
 		std::unique_ptr<FSLock> fslock;
+
+		CLIArgs args;
 };
 
 }
