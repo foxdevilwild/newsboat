@@ -156,7 +156,6 @@ class controller {
 		std::mutex feeds_mutex;
 
 		std::string lock_file;
-		static const std::string LOCK_SUFFIX;
 		std::unique_ptr<FSLock> fslock;
 };
 

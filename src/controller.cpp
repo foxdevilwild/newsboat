@@ -56,9 +56,9 @@
 #include <libxml/uri.h>
 #include <curl/curl.h>
 
-namespace newsboat {
+#include "globals.h"
 
-const std::string controller::LOCK_SUFFIX = ".lock";
+namespace newsboat {
 
 int ctrl_c_hit = 0;
 

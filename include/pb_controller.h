@@ -75,7 +75,6 @@ class pb_controller {
 		queueloader * ql;
 
 		std::string lock_file;
-		static const std::string LOCK_SUFFIX;
 		std::unique_ptr<newsboat::FSLock> fslock;
 };
 
