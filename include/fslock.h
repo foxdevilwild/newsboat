@@ -7,17 +7,17 @@
 namespace newsboat {
 
 class FSLock {
-	public:
-		FSLock() = default;
-		~FSLock();
+public:
+	FSLock() = default;
+	~FSLock();
 
-		bool try_lock(const std::string& lock_file, pid_t & pid);
+	bool try_lock(const std::string& lock_file, pid_t& pid);
 
-	private:
-		bool locked = { false };
-		std::string lock_filepath;
+private:
+	bool locked = {false};
+	std::string lock_filepath;
 };
 
-}
+} // namespace newsboat
 
 #endif /* NEWSBOAT_FSLOCK_H_ */
