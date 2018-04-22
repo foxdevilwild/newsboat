@@ -11,18 +11,9 @@
 namespace newsboat {
 
 void CLIArgs::parse(
-		const std::string& _cache,
-		const std::string& _config,
-		const std::string& _lock,
-		const std::string& _url,
 		int argc,
 		char* argv[])
 {
-	cache_file = _cache;
-	config_file = _config;
-	lock_file = _lock;
-	url_file = _url;
-
 	static const char getopt_str[] = "i:erhqu:c:C:d:l:vVoxXI:E:";
 	static const struct option longopts[] = {
 		{"cache-file"      , required_argument, 0, 'c'},
@@ -84,6 +75,7 @@ void CLIArgs::parse(
 			return;
 		case 'u':
 			url_file = optarg;
+			urlfile_given_on_cmdline = true;
 			using_nonstandard_configs = true;
 			break;
 		case 'c':
@@ -94,6 +86,7 @@ void CLIArgs::parse(
 			break;
 		case 'C':
 			config_file = optarg;
+			configfile_given_on_cmdline = true;
 			using_nonstandard_configs = true;
 			break;
 		case 'X':

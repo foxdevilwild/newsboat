@@ -10,10 +10,6 @@ class CLIArgs {
 		CLIArgs() = default;
 
 		void parse(
-				const std::string& cache_file,
-				const std::string& config_file,
-				const std::string& lock_file,
-				const std::string& url_file,
 				int argc,
 				char* argv[]);
 
@@ -25,6 +21,8 @@ class CLIArgs {
 		std::string url_file;
 		unsigned int show_version = 0;
 		bool cachefile_given_on_cmdline = false;
+		bool configfile_given_on_cmdline = false;
+		bool urlfile_given_on_cmdline = false;
 		bool do_export = false;
 		bool do_import = false;
 		bool do_read_export = false;

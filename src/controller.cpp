@@ -381,17 +381,24 @@ int controller::run(int argc, char * argv[]) {
 
 	setup_dirs(env_home);
 
-	args.parse(cache_file, config_file, lock_file, url_file, argc, argv);
+	args.parse(argc, argv);
 	if (args.should_print_usage)
 		print_usage(argv[0]);
 	if (args.should_exit_with_failure)
 		return EXIT_FAILURE;
 	if (args.should_exit_with_success)
 		return EXIT_SUCCESS;
-	cache_file = args.cache_file;
-	config_file = args.config_file;
-	lock_file = args.lock_file;
-	url_file = args.url_file;
+
+	if (args.cachefile_given_on_cmdline) {
+		cache_file = args.cache_file;
+		lock_file = args.lock_file;
+	}
+	if (args.configfile_given_on_cmdline) {
+		config_file = args.config_file;
+	}
+	if (args.urlfile_given_on_cmdline) {
+		url_file = args.url_file;
+	}
 	refresh_on_start = args.refresh_on_start;
 
 	if (args.show_version) {
