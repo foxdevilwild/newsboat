@@ -17,8 +17,6 @@ class CLIArgs {
 				int argc,
 				char* argv[]);
 
-		void print_usage(char * argv0);
-
 		std::string importfile;
 		std::string readinfofile;
 		std::string cache_file;
@@ -38,6 +36,7 @@ class CLIArgs {
 		bool should_exit_with_success = false;
 		bool should_exit_with_failure = false;
 		bool refresh_on_start = false;
+		bool should_print_usage = false;
 };
 
 } // newsboat

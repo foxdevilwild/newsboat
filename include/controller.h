@@ -130,6 +130,7 @@ class controller {
 		void export_read_information(const std::string& readinfofile);
 
 		bool create_dirs() const;
+		void print_usage(const char* arg0);
 
 		view * v;
 		urlreader * urlcfg;
