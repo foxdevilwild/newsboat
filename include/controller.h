@@ -158,8 +158,6 @@ class controller {
 
 		std::string lock_file;
 		std::unique_ptr<FSLock> fslock;
-
-		CLIArgs args;
 };
 
 }

@@ -381,7 +381,7 @@ int controller::run(int argc, char * argv[]) {
 
 	setup_dirs(env_home);
 
-	args.parse(argc, argv);
+	CLIArgs args(argc, argv);
 	if (args.should_print_usage)
 		print_usage(argv[0]);
 	if (args.should_exit_with_failure)

@@ -10,9 +10,7 @@
 
 namespace newsboat {
 
-void CLIArgs::parse(
-		int argc,
-		char* argv[])
+CLIArgs::CLIArgs(int argc, char* argv[])
 {
 	static const char getopt_str[] = "i:erhqu:c:C:d:l:vVoxXI:E:";
 	static const struct option longopts[] = {

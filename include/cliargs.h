@@ -7,11 +7,7 @@ namespace newsboat {
 
 class CLIArgs {
 	public:
-		CLIArgs() = default;
-
-		void parse(
-				int argc,
-				char* argv[]);
+		CLIArgs(int argc, char* argv[]);
 
 		std::string importfile;
 		std::string readinfofile;
