@@ -135,11 +135,6 @@ CLIArgs::CLIArgs(int argc, char* argv[])
 			do_read_export = true;
 			readinfofile = optarg;
 			break;
-		default:
-			std::cout << strprintf::fmt(_("%s: unknown option - %c"), argv[0], static_cast<char>(c)) << std::endl;
-			should_print_usage = true;
-			should_exit_with_failure = true;
-			return;
 		}
 	};
 }
