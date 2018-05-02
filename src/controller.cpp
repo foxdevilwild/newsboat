@@ -177,8 +177,7 @@ void controller::setup_dirs(const std::string& env_home)
 	cmdlinefile = data + std::string("history.cmdline");
 }
 
-void copy_file(
-	const std::string& input_filepath,
+void copy_file(const std::string& input_filepath,
 	const std::string& output_filepath)
 {
 	std::cerr << input_filepath << "  ->  " << output_filepath << '\n';
@@ -188,8 +187,7 @@ void copy_file(
 	dst << src.rdbuf();
 }
 
-bool controller::migrate_data_from_newsbeuter_xdg(
-	const std::string& env_home,
+bool controller::migrate_data_from_newsbeuter_xdg(const std::string& env_home,
 	bool silent)
 {
 	const char* env_xdg_config = ::getenv("XDG_CONFIG_HOME");
@@ -214,19 +212,16 @@ bool controller::migrate_data_from_newsbeuter_xdg(
 		xdg_data_dir.append("share");
 	}
 
-	const auto newsbeuter_config_dir = xdg_config_dir + NEWSBEUTER_PATH_SEP
-					   + NEWSBEUTER_SUBDIR_XDG
-					   + NEWSBEUTER_PATH_SEP;
-	const auto newsbeuter_data_dir = xdg_data_dir + NEWSBEUTER_PATH_SEP
-					 + NEWSBEUTER_SUBDIR_XDG
-					 + NEWSBEUTER_PATH_SEP;
+	const auto newsbeuter_config_dir = xdg_config_dir +
+		NEWSBEUTER_PATH_SEP + NEWSBEUTER_SUBDIR_XDG +
+		NEWSBEUTER_PATH_SEP;
+	const auto newsbeuter_data_dir = xdg_data_dir + NEWSBEUTER_PATH_SEP +
+		NEWSBEUTER_SUBDIR_XDG + NEWSBEUTER_PATH_SEP;
 
-	const auto newsboat_config_dir = xdg_config_dir + NEWSBEUTER_PATH_SEP
-					 + NEWSBOAT_SUBDIR_XDG
-					 + NEWSBEUTER_PATH_SEP;
-	const auto newsboat_data_dir = xdg_data_dir + NEWSBEUTER_PATH_SEP
-				       + NEWSBOAT_SUBDIR_XDG
-				       + NEWSBEUTER_PATH_SEP;
+	const auto newsboat_config_dir = xdg_config_dir + NEWSBEUTER_PATH_SEP +
+		NEWSBOAT_SUBDIR_XDG + NEWSBEUTER_PATH_SEP;
+	const auto newsboat_data_dir = xdg_data_dir + NEWSBEUTER_PATH_SEP +
+		NEWSBOAT_SUBDIR_XDG + NEWSBEUTER_PATH_SEP;
 
 	bool newsbeuter_config_dir_exists =
 		0 == access(newsbeuter_config_dir.c_str(), R_OK | X_OK);
@@ -239,8 +234,8 @@ bool controller::migrate_data_from_newsbeuter_xdg(
 		bool dir_exists = 0 == access(dir.c_str(), F_OK);
 		if (dir_exists) {
 			LOG(level::DEBUG,
-			    "%s already exists, aborting XDG migration.",
-			    dir);
+				"%s already exists, aborting XDG migration.",
+				dir);
 		}
 		return dir_exists;
 	};
@@ -263,10 +258,10 @@ bool controller::migrate_data_from_newsbeuter_xdg(
 		bool result = 0 == utils::mkdir_parents(dir, 0700);
 		if (!result) {
 			LOG(level::DEBUG,
-			    "Aborting XDG migration because mkdir on %s "
-			    "failed: %s",
-			    dir,
-			    strerror(errno));
+				"Aborting XDG migration because mkdir on %s "
+				"failed: %s",
+				dir,
+				strerror(errno));
 		}
 		return result;
 	};
@@ -279,20 +274,16 @@ bool controller::migrate_data_from_newsbeuter_xdg(
 
 	/* in config */
 	copy_file(newsbeuter_config_dir + "urls", newsboat_config_dir + "urls");
-	copy_file(
-		newsbeuter_config_dir + "config",
+	copy_file(newsbeuter_config_dir + "config",
 		newsboat_config_dir + "config");
 
 	/* in data */
-	copy_file(
-		newsbeuter_data_dir + "cache.db",
+	copy_file(newsbeuter_data_dir + "cache.db",
 		newsboat_data_dir + "cache.db");
 	copy_file(newsbeuter_data_dir + "queue", newsboat_data_dir + "queue");
-	copy_file(
-		newsbeuter_data_dir + "history.search",
+	copy_file(newsbeuter_data_dir + "history.search",
 		newsboat_data_dir + "history.search");
-	copy_file(
-		newsbeuter_data_dir + "history.cmdline",
+	copy_file(newsbeuter_data_dir + "history.cmdline",
 		newsboat_data_dir + "history.cmdline");
 
 	return true;
@@ -321,8 +312,8 @@ bool controller::migrate_data_from_newsbeuter_simple(
 	bool newsboat_dir_exists = 0 == access(newsboat_dir.c_str(), F_OK);
 	if (newsboat_dir_exists) {
 		LOG(level::DEBUG,
-		    "%s already exists, aborting migration.",
-		    newsboat_dir);
+			"%s already exists, aborting migration.",
+			newsboat_dir);
 		return false;
 	}
 
@@ -346,18 +337,15 @@ bool controller::migrate_data_from_newsbeuter_simple(
 	copy_file(newsbeuter_dir + "cache.db", newsboat_dir + "cache.db");
 	copy_file(newsbeuter_dir + "config", newsboat_dir + "config");
 	copy_file(newsbeuter_dir + "queue", newsboat_dir + "queue");
-	copy_file(
-		newsbeuter_dir + "history.search",
+	copy_file(newsbeuter_dir + "history.search",
 		newsboat_dir + "history.search");
-	copy_file(
-		newsbeuter_dir + "history.cmdline",
+	copy_file(newsbeuter_dir + "history.cmdline",
 		newsboat_dir + "history.cmdline");
 
 	return true;
 }
 
-void controller::migrate_data_from_newsbeuter(
-	const std::string& env_home,
+void controller::migrate_data_from_newsbeuter(const std::string& env_home,
 	bool silent)
 {
 	bool migrated = migrate_data_from_newsbeuter_xdg(env_home, silent);
@@ -465,8 +453,8 @@ int controller::run(int argc, char* argv[])
 	 * and process the options */
 	optind = 1;
 
-	while ((c = ::getopt_long(argc, argv, getopt_str, longopts, nullptr))
-	       != -1) {
+	while ((c = ::getopt_long(argc, argv, getopt_str, longopts, nullptr)) !=
+		-1) {
 		switch (c) {
 		case ':': /* fall-through */
 		case '?': /* missing option */
@@ -536,9 +524,8 @@ int controller::run(int argc, char* argv[])
 			if (l > level::NONE && l <= level::DEBUG) {
 				logger::getInstance().set_loglevel(l);
 			} else {
-				std::cerr << strprintf::fmt(
-						     _("%s: %d: invalid "
-						       "loglevel value"),
+				std::cerr << strprintf::fmt(_("%s: %d: invalid "
+							      "loglevel value"),
 						     argv[0],
 						     l)
 					  << std::endl;
@@ -562,11 +549,11 @@ int controller::run(int argc, char* argv[])
 			readinfofile = optarg;
 			break;
 		default:
-			std::cout << strprintf::fmt(
-					     _("%s: unknown option - %c"),
-					     argv[0],
-					     static_cast<char>(c))
-				  << std::endl;
+			std::cout
+				<< strprintf::fmt(_("%s: unknown option - %c"),
+					   argv[0],
+					   static_cast<char>(c))
+				<< std::endl;
 			print_usage(argv[0]);
 			return EXIT_FAILURE;
 		}
@@ -587,8 +574,8 @@ int controller::run(int argc, char* argv[])
 
 	LOG(level::INFO, "nl_langinfo(CODESET): %s", nl_langinfo(CODESET));
 
-	if ((!using_nonstandard_configs)
-	    && (0 != access(url_file.c_str(), F_OK))) {
+	if ((!using_nonstandard_configs) &&
+		(0 != access(url_file.c_str(), F_OK))) {
 		migrate_data_from_newsbeuter(env_home, silent);
 	}
 
@@ -597,8 +584,7 @@ int controller::run(int argc, char* argv[])
 
 	if (!do_export) {
 		if (!silent)
-			std::cout << strprintf::fmt(
-					     _("Starting %s %s..."),
+			std::cout << strprintf::fmt(_("Starting %s %s..."),
 					     PROGRAM_NAME,
 					     PROGRAM_VERSION)
 				  << std::endl;
@@ -644,9 +630,9 @@ int controller::run(int argc, char* argv[])
 		cfgparser.parse(config_file);
 	} catch (const configexception& ex) {
 		LOG(level::ERROR,
-		    "an exception occurred while parsing the configuration "
-		    "file: %s",
-		    ex.what());
+			"an exception occurred while parsing the configuration "
+			"file: %s",
+			ex.what());
 		std::cout << ex.what() << std::endl;
 		return EXIT_FAILURE;
 	}
@@ -733,8 +719,8 @@ int controller::run(int argc, char* argv[])
 		urlcfg = new inoreader_urlreader(&cfg, url_file, api);
 	} else {
 		LOG(level::ERROR,
-		    "unknown urls-source `%s'",
-		    urlcfg->get_source());
+			"unknown urls-source `%s'",
+			urlcfg->get_source());
 	}
 
 	if (!do_export && !silent) {
@@ -814,8 +800,8 @@ int controller::run(int argc, char* argv[])
 	for (auto url : urlcfg->get_urls()) {
 		try {
 			bool ignore_disp =
-				(cfg.get_configvalue("ignore-mode")
-				 == "display");
+				(cfg.get_configvalue("ignore-mode") ==
+					"display");
 			std::shared_ptr<rss_feed> feed =
 				rsscache->internalize_rssfeed(
 					url, ignore_disp ? &ign : nullptr);
@@ -873,8 +859,8 @@ int controller::run(int argc, char* argv[])
 
 	if (do_read_import) {
 		LOG(level::INFO,
-		    "Importing read information file from %s",
-		    readinfofile);
+			"Importing read information file from %s",
+			readinfofile);
 		std::cout << _("Importing list of read articles...");
 		std::cout.flush();
 		import_read_information(readinfofile);
@@ -884,8 +870,8 @@ int controller::run(int argc, char* argv[])
 
 	if (do_read_export) {
 		LOG(level::INFO,
-		    "Exporting read information file to %s",
-		    readinfofile);
+			"Exporting read information file to %s",
+			readinfofile);
 		std::cout << _("Exporting list of read articles...");
 		std::cout.flush();
 		export_read_information(readinfofile);
@@ -905,8 +891,8 @@ int controller::run(int argc, char* argv[])
 
 	// if the user wants to refresh on startup via configuration file, then
 	// do so, but only if -r hasn't been supplied.
-	if (!refresh_on_start
-	    && cfg.get_configvalue_as_bool("refresh-on-startup")) {
+	if (!refresh_on_start &&
+		cfg.get_configvalue_as_bool("refresh-on-startup")) {
 		refresh_on_start = true;
 	}
 
@@ -1016,8 +1002,8 @@ void controller::mark_all_read(unsigned int pos)
 		if (items.size() > 0) {
 			bool notify = items[0]->feedurl() != feed->rssurl();
 			LOG(level::DEBUG,
-			    "controller::mark_all_read: notify = %s",
-			    notify ? "yes" : "no");
+				"controller::mark_all_read: notify = %s",
+				notify ? "yes" : "no");
 			for (auto item : items) {
 				item->set_unread_nowrite_notify(false, notify);
 			}
@@ -1025,8 +1011,7 @@ void controller::mark_all_read(unsigned int pos)
 	}
 }
 
-void controller::reload(
-	unsigned int pos,
+void controller::reload(unsigned int pos,
 	unsigned int max,
 	bool unattended,
 	curl_handle* easyhandle)
@@ -1036,16 +1021,14 @@ void controller::reload(
 		std::shared_ptr<rss_feed> oldfeed = feeds[pos];
 		std::string errmsg;
 		if (!unattended)
-			v->set_status(strprintf::fmt(
-				_("%sLoading %s..."),
+			v->set_status(strprintf::fmt(_("%sLoading %s..."),
 				prepare_message(pos + 1, max),
 				utils::censor_url(oldfeed->rssurl())));
 
 		bool ignore_dl =
 			(cfg.get_configvalue("ignore-mode") == "download");
 
-		rss_parser parser(
-			oldfeed->rssurl(),
+		rss_parser parser(oldfeed->rssurl(),
 			rsscache,
 			&cfg,
 			ignore_dl ? &ign : nullptr,
@@ -1063,8 +1046,8 @@ void controller::reload(
 				newfeed->clear_items();
 
 				bool ignore_disp =
-					(cfg.get_configvalue("ignore-mode")
-					 == "display");
+					(cfg.get_configvalue("ignore-mode") ==
+						"display");
 				std::shared_ptr<rss_feed> feed =
 					rsscache->internalize_rssfeed(
 						oldfeed->rssurl(),
@@ -1083,7 +1066,7 @@ void controller::reload(
 				}
 			} else {
 				LOG(level::DEBUG,
-				    "controller::reload: feed is empty");
+					"controller::reload: feed is empty");
 			}
 			oldfeed->set_status(dl_status::SUCCESS);
 			v->set_status("");
@@ -1123,8 +1106,7 @@ std::shared_ptr<rss_feed> controller::get_feed(unsigned int pos)
 	return feed;
 }
 
-void controller::reload_indexes(
-	const std::vector<int>& indexes,
+void controller::reload_indexes(const std::vector<int>& indexes,
 	bool unattended)
 {
 	scope_measure m1("controller::reload_indexes");
@@ -1144,13 +1126,12 @@ void controller::reload_indexes(
 	unsigned int unread_feeds2, unread_articles2;
 	compute_unread_numbers(unread_feeds2, unread_articles2);
 	bool notify_always = cfg.get_configvalue_as_bool("notify-always");
-	if (notify_always || unread_feeds2 != unread_feeds
-	    || unread_articles2 != unread_articles) {
+	if (notify_always || unread_feeds2 != unread_feeds ||
+		unread_articles2 != unread_articles) {
 		fmtstr_formatter fmt;
 		fmt.register_fmt('f', std::to_string(unread_feeds2));
 		fmt.register_fmt('n', std::to_string(unread_articles2));
-		fmt.register_fmt(
-			'd',
+		fmt.register_fmt('d',
 			std::to_string(unread_articles2 - unread_articles));
 		fmt.register_fmt(
 			'D', std::to_string(unread_feeds2 - unread_feeds));
@@ -1161,8 +1142,7 @@ void controller::reload_indexes(
 		v->set_status("");
 }
 
-void controller::reload_range(
-	unsigned int start,
+void controller::reload_range(unsigned int start,
 	unsigned int end,
 	unsigned int size,
 	bool unattended)
@@ -1192,8 +1172,8 @@ void controller::reload_range(
 
 	for (auto i : v) {
 		LOG(level::DEBUG,
-		    "controller::reload_range: reloading feed #%u",
-		    i);
+			"controller::reload_range: reloading feed #%u",
+			i);
 		this->reload(i, size, unattended, &easyhandle);
 	}
 }
@@ -1225,7 +1205,7 @@ void controller::reload_all(bool unattended)
 	t1 = time(nullptr);
 
 	LOG(level::DEBUG,
-	    "controller::reload_all: starting with reload all...");
+		"controller::reload_all: starting with reload all...");
 	if (num_threads <= 1) {
 		this->reload_range(0, size - 1, size, unattended);
 	} else {
@@ -1233,24 +1213,22 @@ void controller::reload_all(bool unattended)
 			utils::partition_indexes(0, size - 1, num_threads);
 		std::vector<std::thread> threads;
 		LOG(level::DEBUG,
-		    "controller::reload_all: starting reload threads...");
+			"controller::reload_all: starting reload threads...");
 		for (unsigned int i = 0; i < num_threads - 1; i++) {
-			threads.push_back(std::thread(reloadrangethread(
-				this,
+			threads.push_back(std::thread(reloadrangethread(this,
 				partitions[i].first,
 				partitions[i].second,
 				size,
 				unattended)));
 		}
 		LOG(level::DEBUG,
-		    "controller::reload_all: starting my own reload...");
-		this->reload_range(
-			partitions[num_threads - 1].first,
+			"controller::reload_all: starting my own reload...");
+		this->reload_range(partitions[num_threads - 1].first,
 			partitions[num_threads - 1].second,
 			size,
 			unattended);
 		LOG(level::DEBUG,
-		    "controller::reload_all: joining other threads...");
+			"controller::reload_all: joining other threads...");
 		for (size_t i = 0; i < threads.size(); i++) {
 			threads[i].join();
 		}
@@ -1273,8 +1251,8 @@ void controller::reload_all(bool unattended)
 	unsigned int unread_feeds2, unread_articles2;
 	compute_unread_numbers(unread_feeds2, unread_articles2);
 	bool notify_always = cfg.get_configvalue_as_bool("notify-always");
-	if (notify_always || unread_feeds2 > unread_feeds
-	    || unread_articles2 > unread_articles) {
+	if (notify_always || unread_feeds2 > unread_feeds ||
+		unread_articles2 > unread_articles) {
 		int article_count = unread_articles2 - unread_articles;
 		int feed_count = unread_feeds2 - unread_feeds;
 
@@ -1284,8 +1262,7 @@ void controller::reload_all(bool unattended)
 		fmtstr_formatter fmt;
 		fmt.register_fmt('f', std::to_string(unread_feeds2));
 		fmt.register_fmt('n', std::to_string(unread_articles2));
-		fmt.register_fmt(
-			'd',
+		fmt.register_fmt('d',
 			std::to_string(article_count >= 0 ? article_count : 0));
 		fmt.register_fmt(
 			'D', std::to_string(feed_count >= 0 ? feed_count : 0));
@@ -1313,14 +1290,13 @@ void controller::notify(const std::string& msg)
 	if (cfg.get_configvalue("notify-program").length() > 0) {
 		std::string prog = cfg.get_configvalue("notify-program");
 		LOG(level::DEBUG,
-		    "controller:notify: notifying external program `%s'",
-		    prog);
+			"controller:notify: notifying external program `%s'",
+			prog);
 		utils::run_command(prog, msg);
 	}
 }
 
-void controller::compute_unread_numbers(
-	unsigned int& unread_feeds,
+void controller::compute_unread_numbers(unsigned int& unread_feeds,
 	unsigned int& unread_articles)
 {
 	unread_feeds = 0;
@@ -1351,8 +1327,7 @@ void controller::start_reload_all_thread(std::vector<int>* indexes)
 	t.detach();
 }
 
-void controller::print_version_information(
-	const char* argv0,
+void controller::print_version_information(const char* argv0,
 	unsigned int level)
 {
 	if (level <= 1) {
@@ -1427,41 +1402,42 @@ void controller::print_usage(char* argv0)
 		{'r', "refresh-on-start", "", _s("refresh feeds on start")},
 		{'i', "import-from-opml", _s("<file>"), _s("import OPML file")},
 		{'u',
-		 "url-file",
-		 _s("<urlfile>"),
-		 _s("read RSS feed URLs from <urlfile>")},
+			"url-file",
+			_s("<urlfile>"),
+			_s("read RSS feed URLs from <urlfile>")},
 		{'c',
-		 "cache-file",
-		 _s("<cachefile>"),
-		 _s("use <cachefile> as cache file")},
+			"cache-file",
+			_s("<cachefile>"),
+			_s("use <cachefile> as cache file")},
 		{'C',
-		 "config-file",
-		 _s("<configfile>"),
-		 _s("read configuration from <configfile>")},
+			"config-file",
+			_s("<configfile>"),
+			_s("read configuration from <configfile>")},
 		{'X', "vacuum", "", _s("compact the cache")},
 		{'x',
-		 "execute",
-		 _s("<command>..."),
-		 _s("execute list of commands")},
+			"execute",
+			_s("<command>..."),
+			_s("execute list of commands")},
 		{'q', "quiet", "", _s("quiet startup")},
 		{'v', "version", "", _s("get version information")},
 		{'l',
-		 "log-level",
-		 _s("<loglevel>"),
-		 _s("write a log with a certain loglevel (valid values: 1 to "
-		    "6)")},
+			"log-level",
+			_s("<loglevel>"),
+			_s("write a log with a certain loglevel (valid values: "
+			   "1 to "
+			   "6)")},
 		{'d',
-		 "log-file",
-		 _s("<logfile>"),
-		 _s("use <logfile> as output log file")},
+			"log-file",
+			_s("<logfile>"),
+			_s("use <logfile> as output log file")},
 		{'E',
-		 "export-to-file",
-		 _s("<file>"),
-		 _s("export list of read articles to <file>")},
+			"export-to-file",
+			_s("<file>"),
+			_s("export list of read articles to <file>")},
 		{'I',
-		 "import-from-file",
-		 _s("<file>"),
-		 _s("import list of read articles from <file>")},
+			"import-from-file",
+			_s("<file>"),
+			_s("import list of read articles from <file>")},
 		{'h', "help", "", _s("this help")}};
 
 	for (const auto& a : args) {
@@ -1491,7 +1467,7 @@ void controller::import_opml(const std::string& filename)
 	xmlNode* root = xmlDocGetRootElement(doc);
 
 	for (xmlNode* node = root->children; node != nullptr;
-	     node = node->next) {
+		node = node->next) {
 		if (strcmp((const char*)node->name, "body") == 0) {
 			LOG(level::DEBUG, "import_opml: found body");
 			rec_find_rss_outlines(node->children, "");
@@ -1514,8 +1490,7 @@ void controller::export_opml()
 
 	xmlNodePtr head = xmlNewTextChild(
 		opml_node, nullptr, (const xmlChar*)"head", nullptr);
-	xmlNewTextChild(
-		head,
+	xmlNewTextChild(head,
 		nullptr,
 		(const xmlChar*)"title",
 		(const xmlChar*)PROGRAM_NAME " - Exported Feeds");
@@ -1528,25 +1503,20 @@ void controller::export_opml()
 			std::string link = feed->link();
 			std::string title = feed->title();
 
-			xmlNodePtr outline = xmlNewTextChild(
-				body,
+			xmlNodePtr outline = xmlNewTextChild(body,
 				nullptr,
 				(const xmlChar*)"outline",
 				nullptr);
-			xmlSetProp(
-				outline,
+			xmlSetProp(outline,
 				(const xmlChar*)"type",
 				(const xmlChar*)"rss");
-			xmlSetProp(
-				outline,
+			xmlSetProp(outline,
 				(const xmlChar*)"xmlUrl",
 				(const xmlChar*)rssurl.c_str());
-			xmlSetProp(
-				outline,
+			xmlSetProp(outline,
 				(const xmlChar*)"htmlUrl",
 				(const xmlChar*)link.c_str());
-			xmlSetProp(
-				outline,
+			xmlSetProp(outline,
 				(const xmlChar*)"title",
 				(const xmlChar*)title.c_str());
 		}
@@ -1574,9 +1544,10 @@ void controller::rec_find_rss_outlines(xmlNode* node, std::string tag)
 
 			if (url) {
 				LOG(level::DEBUG,
-				    "OPML import: found RSS outline with url = "
-				    "%s",
-				    url);
+					"OPML import: found RSS outline with "
+					"url = "
+					"%s",
+					url);
 
 				std::string nurl = std::string(url);
 
@@ -1587,10 +1558,11 @@ void controller::rec_find_rss_outlines(xmlNode* node, std::string tag)
 					nurl = strprintf::fmt(
 						"exec:%s", url + 1);
 					LOG(level::DEBUG,
-					    "OPML import: liferea-style url %s "
-					    "converted to %s",
-					    url,
-					    nurl);
+						"OPML import: liferea-style "
+						"url %s "
+						"converted to %s",
+						url,
+						nurl);
 				}
 
 				// Handle OPML filters.
@@ -1598,14 +1570,12 @@ void controller::rec_find_rss_outlines(xmlNode* node, std::string tag)
 					node, (const xmlChar*)"filtercmd");
 				if (filtercmd) {
 					LOG(level::DEBUG,
-					    "OPML import: adding filter "
-					    "command %s to url %s",
-					    filtercmd,
-					    nurl);
-					nurl.insert(
-						0,
-						strprintf::fmt(
-							"filter:%s:",
+						"OPML import: adding filter "
+						"command %s to url %s",
+						filtercmd,
+						nurl);
+					nurl.insert(0,
+						strprintf::fmt("filter:%s:",
 							filtercmd));
 					xmlFree(filtercmd);
 				}
@@ -1622,8 +1592,8 @@ void controller::rec_find_rss_outlines(xmlNode* node, std::string tag)
 				bool found = false;
 
 				LOG(level::DEBUG,
-				    "OPML import: size = %u",
-				    urlcfg->get_urls().size());
+					"OPML import: size = %u",
+					urlcfg->get_urls().size());
 				if (urlcfg->get_urls().size() > 0) {
 					for (auto u : urlcfg->get_urls()) {
 						if (u == url) {
@@ -1634,24 +1604,26 @@ void controller::rec_find_rss_outlines(xmlNode* node, std::string tag)
 
 				if (!found) {
 					LOG(level::DEBUG,
-					    "OPML import: added url = %s",
-					    url);
+						"OPML import: added url = %s",
+						url);
 					urlcfg->get_urls().push_back(
 						std::string(url));
 					if (tag.length() > 0) {
 						LOG(level::DEBUG,
-						    "OPML import: appending "
-						    "tag %s to url %s",
-						    tag,
-						    url);
+							"OPML import: "
+							"appending "
+							"tag %s to url %s",
+							tag,
+							url);
 						urlcfg->get_tags(url).push_back(
 							tag);
 					}
 				} else {
 					LOG(level::DEBUG,
-					    "OPML import: url = %s is already "
-					    "in list",
-					    url);
+						"OPML import: url = %s is "
+						"already "
+						"in list",
+						url);
 				}
 				xmlFree(url);
 			} else {
@@ -1703,8 +1675,8 @@ std::vector<std::shared_ptr<rss_item>> controller::search_for_items(
 	return items;
 }
 
-std::shared_ptr<rss_feed>
-controller::get_feed_by_url(const std::string& feedurl)
+std::shared_ptr<rss_feed> controller::get_feed_by_url(
+	const std::string& feedurl)
 {
 	for (auto feed : feeds) {
 		if (feedurl == feed->rssurl())
@@ -1714,8 +1686,7 @@ controller::get_feed_by_url(const std::string& feedurl)
 	return std::shared_ptr<rss_feed>();
 }
 
-void controller::enqueue_url(
-	const std::string& url,
+void controller::enqueue_url(const std::string& url,
 	std::shared_ptr<rss_feed> feed)
 {
 	bool url_found = false;
@@ -1738,7 +1709,7 @@ void controller::enqueue_url(
 	}
 	if (!url_found) {
 		f.open(queue_file.c_str(),
-		       std::fstream::app | std::fstream::out);
+			std::fstream::app | std::fstream::out);
 		std::string filename = generate_enqueue_filename(url, feed);
 		f << url << " " << stfl::quote(filename) << std::endl;
 		f.close();
@@ -1765,20 +1736,19 @@ void controller::reload_urls_file()
 		if (!found) {
 			try {
 				bool ignore_disp =
-					(cfg.get_configvalue("ignore-mode")
-					 == "display");
+					(cfg.get_configvalue("ignore-mode") ==
+						"display");
 				std::shared_ptr<rss_feed> new_feed =
-					rsscache->internalize_rssfeed(
-						url,
+					rsscache->internalize_rssfeed(url,
 						ignore_disp ? &ign : nullptr);
 				new_feed->set_tags(urlcfg->get_tags(url));
 				new_feed->set_order(i);
 				new_feeds.push_back(new_feed);
 			} catch (const dbexception& e) {
 				LOG(level::ERROR,
-				    "controller::reload_urls_file: caught "
-				    "exception: %s",
-				    e.what());
+					"controller::reload_urls_file: caught "
+					"exception: %s",
+					e.what());
 				throw;
 			}
 		}
@@ -1807,8 +1777,7 @@ void controller::edit_urls_file()
 	if (!editor)
 		editor = "vi";
 
-	std::string cmdline = strprintf::fmt(
-		"%s \"%s\"",
+	std::string cmdline = strprintf::fmt("%s \"%s\"",
 		editor,
 		utils::replace_all(url_file, "\"", "\\\""));
 
@@ -1834,8 +1803,7 @@ std::string quote_empty(const std::string& input)
 	}
 }
 
-std::string controller::bookmark(
-	const std::string& url,
+std::string controller::bookmark(const std::string& url,
 	const std::string& title,
 	const std::string& description,
 	const std::string& feed_title)
@@ -1844,8 +1812,7 @@ std::string controller::bookmark(
 	bool is_interactive =
 		cfg.get_configvalue_as_bool("bookmark-interactive");
 	if (bookmark_cmd.length() > 0) {
-		std::string cmdline = strprintf::fmt(
-			"%s '%s' '%s' '%s' '%s'",
+		std::string cmdline = strprintf::fmt("%s '%s' '%s' '%s' '%s'",
 			bookmark_cmd,
 			utils::replace_all(url, "'", "%27"),
 			utils::replace_all(title, "'", "%27"),
@@ -1882,22 +1849,21 @@ int controller::execute_commands(char** argv, unsigned int i)
 		v->pop_current_formaction();
 	for (; argv[i]; ++i) {
 		LOG(level::DEBUG,
-		    "controller::execute_commands: executing `%s'",
-		    argv[i]);
+			"controller::execute_commands: executing `%s'",
+			argv[i]);
 		std::string cmd(argv[i]);
 		if (cmd == "reload") {
 			reload_all(true);
 		} else if (cmd == "print-unread") {
-			std::cout << strprintf::fmt(
-					     _("%u unread articles"),
+			std::cout << strprintf::fmt(_("%u unread articles"),
 					     rsscache->get_unread_count())
 				  << std::endl;
 		} else {
-			std::cerr << strprintf::fmt(
-					     _("%s: %s: unknown command"),
-					     argv[0],
-					     argv[i])
-				  << std::endl;
+			std::cerr
+				<< strprintf::fmt(_("%s: %s: unknown command"),
+					   argv[0],
+					   argv[i])
+				<< std::endl;
 			return EXIT_FAILURE;
 		}
 	}
@@ -1919,8 +1885,7 @@ std::string controller::write_temporary_item(std::shared_ptr<rss_item> item)
 	}
 }
 
-void controller::write_item(
-	std::shared_ptr<rss_item> item,
+void controller::write_item(std::shared_ptr<rss_item> item,
 	const std::string& filename)
 {
 	std::fstream f;
@@ -1988,18 +1953,18 @@ void controller::save_feed(std::shared_ptr<rss_feed> feed, unsigned int pos)
 {
 	if (!feed->is_empty()) {
 		LOG(level::DEBUG,
-		    "controller::save_feed: feed is nonempty, saving");
+			"controller::save_feed: feed is nonempty, saving");
 		rsscache->externalize_rssfeed(
 			feed, ign.matches_resetunread(feed->rssurl()));
 		LOG(level::DEBUG,
-		    "controller::save_feed: after externalize_rssfeed");
+			"controller::save_feed: after externalize_rssfeed");
 
 		bool ignore_disp =
 			(cfg.get_configvalue("ignore-mode") == "display");
 		feed = rsscache->internalize_rssfeed(
 			feed->rssurl(), ignore_disp ? &ign : nullptr);
 		LOG(level::DEBUG,
-		    "controller::save_feed: after internalize_rssfeed");
+			"controller::save_feed: after internalize_rssfeed");
 		feed->set_tags(urlcfg->get_tags(feed->rssurl()));
 		{
 			unsigned int order = feeds[pos]->get_order();
@@ -2012,7 +1977,7 @@ void controller::save_feed(std::shared_ptr<rss_feed> feed, unsigned int pos)
 		v->notify_itemlist_change(feeds[pos]);
 	} else {
 		LOG(level::DEBUG,
-		    "controller::save_feed: feed is empty, not saving");
+			"controller::save_feed: feed is empty, not saving");
 	}
 }
 
@@ -2024,14 +1989,16 @@ void controller::enqueue_items(std::shared_ptr<rss_feed> feed)
 	for (auto item : feed->items()) {
 		if (!item->enqueued() && item->enclosure_url().length() > 0) {
 			LOG(level::DEBUG,
-			    "controller::enqueue_items: enclosure_url = `%s' "
-			    "enclosure_type = `%s'",
-			    item->enclosure_url(),
-			    item->enclosure_type());
+				"controller::enqueue_items: enclosure_url = "
+				"`%s' "
+				"enclosure_type = `%s'",
+				item->enclosure_url(),
+				item->enclosure_type());
 			if (utils::is_http_url(item->enclosure_url())) {
 				LOG(level::INFO,
-				    "controller::enqueue_items: enqueuing `%s'",
-				    item->enclosure_url());
+					"controller::enqueue_items: enqueuing "
+					"`%s'",
+					item->enclosure_url());
 				enqueue_url(item->enclosure_url(), feed);
 				item->set_enqueued(true);
 				rsscache->update_rssitem_unread_and_enqueued(
@@ -2041,8 +2008,7 @@ void controller::enqueue_items(std::shared_ptr<rss_feed> feed)
 	}
 }
 
-std::string controller::generate_enqueue_filename(
-	const std::string& url,
+std::string controller::generate_enqueue_filename(const std::string& url,
 	std::shared_ptr<rss_feed> feed)
 {
 	std::string dlformat = cfg.get_configvalue("download-path");
@@ -2061,8 +2027,7 @@ std::string controller::generate_enqueue_filename(
 	if (!base || strlen(base) == 0) {
 		char lbuf[128];
 		time_t t = time(nullptr);
-		strftime(
-			lbuf,
+		strftime(lbuf,
 			sizeof(lbuf),
 			"%Y-%b-%d-%H%M%S.unknown",
 			localtime(&t));
@@ -2124,57 +2089,48 @@ void controller::sort_feeds()
 	if (sortmethod_info.size() > 1)
 		direction = sortmethod_info[1];
 	if (sortmethod == "none") {
-		std::stable_sort(
-			feeds.begin(),
+		std::stable_sort(feeds.begin(),
 			feeds.end(),
 			[](std::shared_ptr<rss_feed> a,
-			   std::shared_ptr<rss_feed> b) {
+				std::shared_ptr<rss_feed> b) {
 				return a->get_order() < b->get_order();
 			});
 	} else if (sortmethod == "firsttag") {
-		std::stable_sort(
-			feeds.begin(),
+		std::stable_sort(feeds.begin(),
 			feeds.end(),
 			[](std::shared_ptr<rss_feed> a,
-			   std::shared_ptr<rss_feed> b) {
-				if (a->get_firsttag().length() == 0
-				    || b->get_firsttag().length() == 0) {
-					return a->get_firsttag().length()
-					       > b->get_firsttag().length();
+				std::shared_ptr<rss_feed> b) {
+				if (a->get_firsttag().length() == 0 ||
+					b->get_firsttag().length() == 0) {
+					return a->get_firsttag().length() >
+						b->get_firsttag().length();
 				}
-				return strcasecmp(
-					       a->get_firsttag().c_str(),
-					       b->get_firsttag().c_str())
-				       < 0;
+				return strcasecmp(a->get_firsttag().c_str(),
+					       b->get_firsttag().c_str()) < 0;
 			});
 	} else if (sortmethod == "title") {
-		std::stable_sort(
-			feeds.begin(),
+		std::stable_sort(feeds.begin(),
 			feeds.end(),
 			[](std::shared_ptr<rss_feed> a,
-			   std::shared_ptr<rss_feed> b) {
-				return strcasecmp(
-					       a->title().c_str(),
-					       b->title().c_str())
-				       < 0;
+				std::shared_ptr<rss_feed> b) {
+				return strcasecmp(a->title().c_str(),
+					       b->title().c_str()) < 0;
 			});
 	} else if (sortmethod == "articlecount") {
-		std::stable_sort(
-			feeds.begin(),
+		std::stable_sort(feeds.begin(),
 			feeds.end(),
 			[](std::shared_ptr<rss_feed> a,
-			   std::shared_ptr<rss_feed> b) {
-				return a->total_item_count()
-				       < b->total_item_count();
+				std::shared_ptr<rss_feed> b) {
+				return a->total_item_count() <
+					b->total_item_count();
 			});
 	} else if (sortmethod == "unreadarticlecount") {
-		std::stable_sort(
-			feeds.begin(),
+		std::stable_sort(feeds.begin(),
 			feeds.end(),
 			[](std::shared_ptr<rss_feed> a,
-			   std::shared_ptr<rss_feed> b) {
-				return a->unread_item_count()
-				       < b->unread_item_count();
+				std::shared_ptr<rss_feed> b) {
+				return a->unread_item_count() <
+					b->unread_item_count();
 			});
 	}
 	if (direction == "asc") {
@@ -2188,8 +2144,7 @@ void controller::update_config()
 	v->update_bindings();
 
 	if (colorman.colors_loaded()) {
-		v->set_colors(
-			colorman.get_fgcolors(),
+		v->set_colors(colorman.get_fgcolors(),
 			colorman.get_bgcolors(),
 			colorman.get_attributes());
 		v->apply_colors_to_all_formactions();
@@ -2200,10 +2155,10 @@ void controller::update_config()
 			logger::getInstance().set_errorlogfile(
 				cfg.get_configvalue("error-log"));
 		} catch (const exception& e) {
-			const std::string msg = strprintf::fmt(
-				"Couldn't open %s: %s",
-				cfg.get_configvalue("error-log"),
-				e.what());
+			const std::string msg =
+				strprintf::fmt("Couldn't open %s: %s",
+					cfg.get_configvalue("error-log"),
+					e.what());
 			v->show_error(msg);
 			std::cerr << msg << std::endl;
 		}
