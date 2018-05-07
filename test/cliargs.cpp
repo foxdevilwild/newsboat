@@ -1,6 +1,7 @@
 #include "3rd-party/catch.hpp"
 
 #include <iostream>
+#include <cstring>
 
 #include <cliargs.h>
 
@@ -30,21 +31,14 @@ class Opts
 		{
 			m_opts.reserve(m_argc);
 
-			// It's slightly awkward to assign pointers directly into an array
-			// managed by m_data, so we'll put them into this intermediate
-			// vector first, and then copy wholesale.
-			std::vector<char*> ptrs;
-			ptrs.reserve(m_argc);
-
 			for (const std::string& option : opts) {
 				std::cerr << "Copying `" << option << "'\n";
 				// Copy string into separate char[], managed by unique_ptr.
 				auto ptr = std::unique_ptr<char[]>(new char[option.size() + 1]);
+				std::cerr << (void*)ptr.get() << '\n';
 				std::copy(option.cbegin(), option.cend(), ptr.get());
+				std::cerr << (void*)ptr.get() << '\n';
 				ptr.get()[option.size()] = '\0';
-
-				// Append that string to argv.
-				ptrs.push_back(ptr.get());
 
 				// Hold onto the smart pointer to keep the entry in argv alive.
 				m_opts.emplace_back(std::move(ptr));
@@ -52,8 +46,11 @@ class Opts
 
 			// Copy out intermediate argv vector into its final storage.
 			m_data = std::unique_ptr<char*[]>(new char*[m_argc + 1]);
-			std::copy(ptrs.cbegin(), ptrs.cend(), m_data.get());
-			m_data.get()[m_argc] = nullptr;
+			int i = 0;
+			for (const auto& ptr : m_opts) {
+				m_data.get()[i++] = ptr.get();
+			}
+			m_data.get()[i] = nullptr;
 		}
 
 		std::size_t argc() const
@@ -91,6 +88,8 @@ TEST_CASE("Asks to print usage info and exit with failure if unknown option is "
 	SECTION("Example No.3") {
 		const Opts opts {"newsboat", "-m ix"};
 		CLIArgs args(opts.argc(), opts.argv());
+		//char* opts[] {::strdup("newsboat"), ::strdup("-mix"), nullptr};
+		//CLIArgs args(2, opts);
 
 		REQUIRE(args.should_print_usage);
 		REQUIRE(args.should_exit_with_failure);
@@ -100,6 +99,8 @@ TEST_CASE("Asks to print usage info and exit with failure if unknown option is "
 	SECTION("Example No.4") {
 		const Opts opts {"newsboat", "-wtf"};
 		CLIArgs args(opts.argc(), opts.argv());
+		//char* opts[] {::strdup("newsboat"), ::strdup("-wtf"), nullptr};
+		//CLIArgs args(2, opts);
 
 		REQUIRE(args.should_print_usage);
 		REQUIRE(args.should_exit_with_failure);

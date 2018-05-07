@@ -34,7 +34,7 @@ CLIArgs::CLIArgs(int argc, char* argv[])
 
 	/* Now that silencing's set up, let's rewind to the beginning of argv and
 	 * process the options */
-	optind = 1;
+	optind = 0;
 
 	int c;
 	while ((c = ::getopt_long(argc, argv, getopt_str, longopts, nullptr)) != -1) {
