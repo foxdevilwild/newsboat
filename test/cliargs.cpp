@@ -51,8 +51,9 @@ class Opts
 			}
 
 			// Copy out intermediate argv vector into its final storage.
-			m_data = std::unique_ptr<char*[]>(new char*[m_argc]);
+			m_data = std::unique_ptr<char*[]>(new char*[m_argc + 1]);
 			std::copy(ptrs.cbegin(), ptrs.cend(), m_data.get());
+			m_data.get()[m_argc] = nullptr;
 		}
 
 		std::size_t argc() const
