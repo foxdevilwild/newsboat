@@ -17,9 +17,9 @@ using namespace newsboat;
 class Opts
 {
 	/// Individual elements of argv.
-	std::vector<std::unique_ptr<char>> m_opts;
+	std::vector<std::unique_ptr<char[]>> m_opts;
 	/// This is argv as main() knows it.
-	std::unique_ptr<char*> m_data;
+	std::unique_ptr<char*[]> m_data;
 	/// This is argc as main() knows it.
 	std::size_t m_argc;
 
@@ -39,7 +39,7 @@ class Opts
 			for (const std::string& option : opts) {
 				std::cerr << "Copying `" << option << "'\n";
 				// Copy string into separate char[], managed by unique_ptr.
-				auto ptr = std::unique_ptr<char>(new char[option.size() + 1]);
+				auto ptr = std::unique_ptr<char[]>(new char[option.size() + 1]);
 				std::copy(option.cbegin(), option.cend(), ptr.get());
 				ptr.get()[option.size()] = '\0';
 
@@ -51,7 +51,7 @@ class Opts
 			}
 
 			// Copy out intermediate argv vector into its final storage.
-			m_data = std::unique_ptr<char*>(new char*[m_argc]);
+			m_data = std::unique_ptr<char*[]>(new char*[m_argc]);
 			std::copy(ptrs.cbegin(), ptrs.cend(), m_data.get());
 		}
 
